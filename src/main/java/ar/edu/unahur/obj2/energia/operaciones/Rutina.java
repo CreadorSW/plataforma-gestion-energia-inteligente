@@ -9,11 +9,20 @@ public class Rutina implements Operable {
     private Boolean ejecutado = Boolean.FALSE;
 
     @Override
-    public void ejecutar() {
-        if (!ejecutado){
-            loteDeOperaciones.forEach(Operable::ejecutar);
-            ejecutado = Boolean.TRUE;
-        }
+    public void ejecutar() throws ReservaExcedidaException {
+        List<Operable> operacionesEjecutadas = new ArrayList<>();
+            try {
+                for (Operable operacion : loteDeOperaciones) {
+                    operacion.ejecutar();
+                    operacionesEjecutadas.add(operacion);
+                }
+                ejecutado = Boolean.TRUE;
+            } catch (Exception e) {
+                for (int i = operacionesEjecutadas.size() - 1; i >= 0; i--) {
+                    operacionesEjecutadas.get(i).deshacer();
+                }
+                throw e;
+            }
        
     }
 
@@ -27,6 +36,21 @@ public class Rutina implements Operable {
             }
             ejecutado = Boolean.FALSE;
         }
+    }
+
+    // Si el lote ya fue ejecutado, agregarle más operaciones rompe la semántica de "comando ejecutable una sola vez".
+    public void agregarOperacionALote(Operable operacion){
+        if (ejecutado) {
+            throw new OperacionInvalidaException("No se pueden agregar operaciones a un lote ya ejecutado");
+        }
+        loteDeOperaciones.add(operacion);
+    }
+
+    public void removerOperacionDeLote(Operable operacion) {
+        if (ejecutado) {
+            throw new OperacionInvalidaException("No se pueden remover operaciones de un lote ya ejecutado");
+        }
+        loteDeOperaciones.remove(operacion);
     }
 
 }

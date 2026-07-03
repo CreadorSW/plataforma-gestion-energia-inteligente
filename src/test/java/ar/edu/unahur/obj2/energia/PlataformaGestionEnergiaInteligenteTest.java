@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import ar.edu.unahur.obj2.energia.operaciones.ControladorOperaciones;
 import ar.edu.unahur.obj2.energia.operaciones.OperacionCarga;
 import ar.edu.unahur.obj2.energia.operaciones.OperacionConsumo;
+import ar.edu.unahur.obj2.energia.operaciones.ReservaExcedidaException;
 
 public class PlataformaGestionEnergiaInteligenteTest {
     private ControladorOperaciones controlador;
@@ -28,7 +29,7 @@ public class PlataformaGestionEnergiaInteligenteTest {
     }
 
     @Test
-    void dadaUnaBateria_SeHacenTransferenciasYNivelDeEnergiaQuedaRegistrado(){
+    void dadaUnaBateria_SeHacenTransferenciasYNivelDeEnergiaQuedaRegistrado() throws ReservaExcedidaException{
         controlador.ejecutar(carga7000);
         controlador.ejecutar(consumo5000);
         controlador.ejecutar(consumo16000);

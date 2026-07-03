@@ -20,7 +20,7 @@ public class OperacionCarga extends Operacion {
     @Override
     public void deshacer() {
         if (ejecutado){
-            bateria.consumir(energia);
+            bateria.deshacerCarga(energia); // deshacer no le tiene que preguntar a a la batería si está permitido porque ya se ejecutó antes!!
             ejecutado = Boolean.FALSE;
         }
     }

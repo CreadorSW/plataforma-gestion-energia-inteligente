@@ -10,7 +10,7 @@ public class OperacionConsumo extends Operacion {
     }
 
     @Override
-    public void ejecutar() {
+    public void ejecutar() throws ReservaExcedidaException {
         if (!ejecutado){
             bateria.consumir(energia);
             ejecutado = Boolean.TRUE;
