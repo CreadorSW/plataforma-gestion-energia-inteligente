@@ -12,6 +12,9 @@ public abstract class Operacion implements Operable {
     protected Boolean ejecutado = Boolean.FALSE;
 
     public Operacion(BateriaAlmacenamiento bateria, double energia){
+        if (energia <= 0) {
+            throw new OperacionInvalidaException("La energía debe ser mayor a 0 kWh");
+        }
         this.bateria = bateria;
         this.energia = energia;
     }
