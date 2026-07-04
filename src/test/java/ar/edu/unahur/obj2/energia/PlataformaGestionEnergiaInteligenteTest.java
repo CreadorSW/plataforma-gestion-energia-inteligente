@@ -2,10 +2,14 @@ package ar.edu.unahur.obj2.energia;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ar.edu.unahur.obj2.energia.notificaciones.AlarmaReservaCritica;
+import ar.edu.unahur.obj2.energia.notificaciones.NotificacionAdministrador;
+import ar.edu.unahur.obj2.energia.notificaciones.RegistroCentralDeAuditoria;
 import ar.edu.unahur.obj2.energia.operaciones.ControladorOperaciones;
 import ar.edu.unahur.obj2.energia.operaciones.OperacionCarga;
 import ar.edu.unahur.obj2.energia.operaciones.OperacionConsumo;
@@ -20,15 +24,22 @@ public class PlataformaGestionEnergiaInteligenteTest {
     private OperacionConsumo consumo5000;
     private OperacionConsumo consumo16000;
     private OperacionCarga carga9000;
+    private AlarmaReservaCritica alarmaReservaCritica;
+    private RegistroCentralDeAuditoria auditoria1;
+    private NotificacionAdministrador notificacionAdministrador;
 
     @BeforeEach
     void objetosParaTest() {
         controlador = new ControladorOperaciones();
-        bateria1 = new BateriaAlmacenamiento("BAT-1234", 10000);
+        bateria1 = new BateriaAlmacenamiento("Bat1234", 10000);
         carga7000 = new OperacionCarga(bateria1, 7000);
         consumo5000 = new OperacionConsumo(bateria1, 5000);
         consumo16000 = new OperacionConsumo(bateria1, 16000);
         carga9000 = new OperacionCarga(bateria1, 9000);
+
+        alarmaReservaCritica = new AlarmaReservaCritica();
+        auditoria1 = new RegistroCentralDeAuditoria();
+        notificacionAdministrador = new NotificacionAdministrador();
     }
 
     @Test
@@ -86,6 +97,28 @@ public class PlataformaGestionEnergiaInteligenteTest {
         OperacionConsumo consumoExcesivo = new OperacionConsumo(bateria1, 70000);
 
         assertThrows(ReservaExcedidaException.class, () -> controlador.ejecutar(consumoExcesivo));
+    }
+
+    @Test
+    void dadoQueSeAgreganObservadores_SeLosRegistraCorrectamente() {
+        bateria1.agregarObservador(alarmaReservaCritica);
+        bateria1.agregarObservador(auditoria1);
+        bateria1.agregarObservador(notificacionAdministrador);
+
+        assertTrue(bateria1.getObservadores().contains(alarmaReservaCritica));
+        assertTrue(bateria1.getObservadores().contains(auditoria1));
+        assertTrue(bateria1.getObservadores().contains(notificacionAdministrador));
+    }
+
+    @Test
+    void dadaUnaCargaEnBateriaConTodosLosObservadores_AuditoriaYAlarma_Notifican() throws ReservaExcedidaException {
+        bateria1.agregarObservador(alarmaReservaCritica);
+        bateria1.agregarObservador(auditoria1);
+        bateria1.agregarObservador(notificacionAdministrador);
+
+        controlador.ejecutar(new OperacionCarga(bateria1, 5000));
+
+        assertTrue(auditoria1.getOperaciones().contains("Batería Bat1234 carga de 5000.0 kWh"));
     }
 }
 
