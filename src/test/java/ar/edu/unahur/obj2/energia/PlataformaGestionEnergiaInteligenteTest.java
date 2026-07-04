@@ -111,7 +111,7 @@ public class PlataformaGestionEnergiaInteligenteTest {
     }
 
     @Test
-    void dadaUnaCargaEnBateriaConTodosLosObservadores_AuditoriaYAlarma_Notifican() throws ReservaExcedidaException {
+    void dadaUnaCargaEnBateriaConTodosLosObservadores_AuditoriaNotifica() throws ReservaExcedidaException {
         bateria1.agregarObservador(alarmaReservaCritica);
         bateria1.agregarObservador(auditoria1);
         bateria1.agregarObservador(notificacionAdministrador);

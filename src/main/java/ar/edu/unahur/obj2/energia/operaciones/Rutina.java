@@ -17,7 +17,7 @@ public class Rutina implements Operable {
                 operacionesEjecutadas.add(operacion);
             }
             ejecutado = Boolean.TRUE;
-        } catch (Exception e) {
+        } catch (ReservaExcedidaException e) {
             for (int i = operacionesEjecutadas.size() - 1; i >= 0; i--) {
                 operacionesEjecutadas.get(i).deshacer();
             }
