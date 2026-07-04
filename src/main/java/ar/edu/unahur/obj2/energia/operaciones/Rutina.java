@@ -11,18 +11,18 @@ public class Rutina implements Operable {
     @Override
     public void ejecutar() throws ReservaExcedidaException {
         List<Operable> operacionesEjecutadas = new ArrayList<>();
-            try {
-                for (Operable operacion : loteDeOperaciones) {
-                    operacion.ejecutar();
-                    operacionesEjecutadas.add(operacion);
-                }
-                ejecutado = Boolean.TRUE;
-            } catch (Exception e) {
-                for (int i = operacionesEjecutadas.size() - 1; i >= 0; i--) {
-                    operacionesEjecutadas.get(i).deshacer();
-                }
-                throw e;
+        try {
+            for (Operable operacion : loteDeOperaciones) {
+                operacion.ejecutar();
+                operacionesEjecutadas.add(operacion);
             }
+            ejecutado = Boolean.TRUE;
+        } catch (Exception e) {
+            for (int i = operacionesEjecutadas.size() - 1; i >= 0; i--) {
+                operacionesEjecutadas.get(i).deshacer();
+            }
+            throw new ReservaExcedidaException("La rutina falló y se revirtieron las operaciones: " + e.getMessage(), e);
+        }
        
     }
 
