@@ -22,7 +22,7 @@ note left of ControladorOperaciones
 Al tener <b>Composite</b> en el diseño, el administrador puede
 deshacer un lote ya que puede tratar al mismo
 como un comando individual.
-<b>Como LoteOperaciones solo se puede ejecutar</b>
+<b>Como Rutina solo se puede ejecutar</b>
 <b>una vez, desde la perspectiva del invoker el</b>
 <b>lote de operaciones pendientes se consumió.</b>
 <b>No quedan operaciones "pendientes" esperando</b>
@@ -69,9 +69,9 @@ class Rutina <<Composite>> implements Operable{
 
 }
 note bottom of Rutina
-    <b>El lote se comporta igual que un comando concreto:</b>
+    <b>Rutina se comporta igual que un comando concreto:</b>
     <b>ejecutable una vez, deshacible una vez, reversible.</b>
-    Cuando el Administrador quiere ejecutar un lote,
+    Cuando el ControladorDeOperaciones quiere ejecutar un lote,
     ya sea diferido o no, el cliente lo crea y se lo pasa.
     El Cliente siempre decide
     cuándo se ejecutan las operaciones.
@@ -79,19 +79,19 @@ end note
 
 
 interface Observador <<Subscriber>>{
-    +reaccionar(cuenta: Cuenta, tipoMovimiento: String, monto: double)
+    +reaccionar(bateria: BateriaAlmacenamiento, tipoOperacion: String, energia: double)
 }
 
 class RegistroCentralDeAuditoria implements Observador{
-    +reaccionar(cuenta: Cuenta, tipoMovimiento: String, monto: double)
+    +reaccionar(bateria: BateriaAlmacenamiento, tipoOperacion: String, energia: double)
 }
 
 class NotificacionesAlAdministrador implements Observador{
-    +reaccionar(cuenta: Cuenta, tipoMovimiento: String, monto: double)
+    +reaccionar(bateria: BateriaAlmacenamiento, tipoOperacion: String, energia: double)
 }
 
 class AlarmaDeReservaCritica implements Observador{
-    +reaccionar(cuenta: Cuenta, tipoMovimiento: String, monto: double)
+    +reaccionar(bateria: BateriaAlmacenamiento, tipoOperacion: String, energia: double)
 }
 
 
