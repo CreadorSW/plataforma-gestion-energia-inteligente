@@ -64,7 +64,7 @@ public class PlataformaGestionEnergiaInteligenteTest {
         controlador.ejecutar(rutina1);
         controlador.deshacer();
 
-        assertEquals(10000, bateria1.getNivelDeEnergia(), 0.001);
+        assertEquals(10000, bateria1.getNivelDeEnergia());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class PlataformaGestionEnergiaInteligenteTest {
         controlador.ejecutar(carga7000);
         controlador.deshacer();
 
-        assertEquals(10000, bateria1.getNivelDeEnergia(), 0.001);
+        assertEquals(10000, bateria1.getNivelDeEnergia());
     }
 
 

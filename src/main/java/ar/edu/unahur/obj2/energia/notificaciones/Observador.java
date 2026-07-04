@@ -4,5 +4,5 @@ import ar.edu.unahur.obj2.energia.BateriaAlmacenamiento;
 
 public interface Observador {
 
-    public void reaccionar(BateriaAlmacenamiento cuenta, String tipoTransferencia, double energia);
+    public void reaccionar(BateriaAlmacenamiento bateria, String tipoOperacion, double energia);
 }

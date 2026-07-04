@@ -1,5 +1,6 @@
 package ar.edu.unahur.obj2.energia;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.unahur.obj2.energia.notificaciones.Observador;
@@ -8,7 +9,7 @@ import ar.edu.unahur.obj2.energia.operaciones.ReservaExcedidaException;
 public class BateriaAlmacenamiento {
     private final String identificador;
     private double nivelDeEnergia;
-    private List<Observador> sistemasPerifericos;
+    private List<Observador> sistemasPerifericos= new ArrayList<>();
 
     public BateriaAlmacenamiento(String identificador, double nivelDeEnergia){
         this.identificador = identificador;
@@ -25,6 +26,7 @@ public class BateriaAlmacenamiento {
 
     public void cargar(double energia){
         this.nivelDeEnergia += energia;
+        notificarObservadores("carga", energia);
     }
 
     public void consumir(double energia) throws ReservaExcedidaException {
@@ -32,6 +34,7 @@ public class BateriaAlmacenamiento {
             throw new ReservaExcedidaException("El overdraft permitido es de -5000 kWh");
         }
         this.nivelDeEnergia -=energia;
+        notificarObservadores("consumo", energia);
     }
 
     // Lo creé para el método deshacer de Operación Carga. 
